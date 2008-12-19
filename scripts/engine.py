@@ -6,9 +6,6 @@ from browser import Browser
 from random import Random
 from account import Account, Stuffs, Village
 
-# globals 
-
-# statics
 class Engine:
     def __init__(self,account):
         self.account = account
@@ -170,9 +167,9 @@ class Engine:
             village.x = s['x']
             village.y = s['y']
 if __name__ == '__main__':
+    # It's only for debug now, not working at all
     a = Account('http://s3.travian.uk','username','password')
     ENG = Engine(a)
     #print a.villages
-    ENG.sendStuff(a.villages['150634'], a.villages['102688'], Stuffs(0, 100, 0, 0))
-    #a.villages['150634'].sendStuff(a.villages['102688'], 0, 100, 0, 0) #sendStuff(self,x,y,legno,argilla,ferro,grano)
+    #a.villages['190934'].sendStuff(a.villages['137684'], 0, 100, 0, 0) #sendStuff(self,x,y,legno,argilla,ferro,grano)
     
