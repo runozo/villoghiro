@@ -7,18 +7,19 @@ from random import Random
 from account import Account, Stuffs, Village
 
 # globals 
-MAIN_URL = "http://s7.travian.it/"
-PATH_LOGIN = MAIN_URL + "login.php"
-PATH_DORF1 = MAIN_URL + "dorf1.php"
-PATH_DORF2 = MAIN_URL + "dorf2.php"
-PATH_BUILD = MAIN_URL + "build.php"
-PATH_KARTE = MAIN_URL + "karte.php"
+
 # statics
 class Engine:
     def __init__(self,account):
         self.account = account
         self.browser = Browser()
         self.parser = TheParser()
+        self.MAIN_URL = account.mainurl
+        self.PATH_LOGIN = self.MAIN_URL + "login.php"
+        self.PATH_DORF1 = self.MAIN_URL + "dorf1.php"
+        self.PATH_DORF2 = self.MAIN_URL + "dorf2.php"
+        self.PATH_BUILD = self.MAIN_URL + "build.php"
+        self.PATH_KARTE = self.MAIN_URL + "karte.php"
         self.__login()
     def sendStuff(self,srcvill, dstvill,stuffs):
             # go to main site with dorfID
@@ -27,9 +28,9 @@ class Engine:
             ferro = stuffs.ferro
             grano = stuffs.grano
             print "Sending from %s to %s %swood %sclay %siron %scrop" % (srcvill.name, dstvill.name, legno, argilla,ferro,grano)
-            path = PATH_DORF2 + '?newdid=' + srcvill.dorfId
+            path = self.PATH_DORF2 + '?newdid=' + srcvill.dorfId
             self.browser.go(path)
-            path = PATH_BUILD + '?id='+srcvill.marketId
+            path = self.PATH_BUILD + '?id='+srcvill.marketId
             self.browser.go(path)
             s = self.browser.content()
             f = open("./dorf2_"+srcvill.dorfId, "w")
@@ -42,7 +43,7 @@ class Engine:
             print "kid=%s sz=%s cap=%s" % (vars['kid'],vars['sz'], capacity)
             #resp, data = http.post(path, data, $header);
             data = urllib.urlencode({'id':srcvill.marketId,'a':srcvill.dorfId,'sz':vars['sz'],'kid':vars['kid'],'r1':legno,'r2':argilla,'r3':ferro,'r4':grano,'s1.x':Random().randint(0, 30),'s1.y':Random().randint(0, 30),'s1':'ok'})
-            self.browser.go(PATH_BUILD,data)
+            self.browser.go(self.PATH_BUILD,data)
             print self.browser.content()
     def randomwait(self):
         time.sleep(Random().randint(0, 3))
@@ -79,7 +80,7 @@ class Engine:
             data = None  
             print 'Login in normal way'
             try:
-                self.browser.go(PATH_LOGIN, data)
+                self.browser.go(self.PATH_LOGIN, data)
             except HTTPError, e:
                 print 'The server couldn\'t fulfill the request.'
                 print 'Error code: ', e.code
@@ -90,7 +91,7 @@ class Engine:
                 lf = self.parser.getLoginForm(self.browser.content())
                 data = urllib.urlencode({"action":"dorf1.php","login":lf['loginvalue'],lf['loginform_name']:self.account.username,lf['loginform_pass']:self.account.password, lf['loginform_hidden']:'',"autologin":"ja"})
                 try:
-                    self.browser.go(PATH_DORF1, data)
+                    self.browser.go(self.PATH_DORF1, data)
                 except HTTPError, e:
                     print 'The server couldn\'t fulfill the request.'
                     print 'Error code: ', e.code
@@ -128,7 +129,7 @@ class Engine:
         for dorfid, village in self.account.villages.items():
             print village.name,village.production.legno,village.production.argilla,village.production.ferro,village.production.grano, village.x, village.y
     def __updateStuffs(self, village):
-        url = PATH_DORF1 + "?newdid=%s" % (village.dorfId,)
+        url = self.PATH_DORF1 + "?newdid=%s" % (village.dorfId,)
         #print url
         self.randomwait()
         self.browser.go(url)
@@ -142,7 +143,7 @@ class Engine:
         village.stock = Stuffs(stock[TheParser.LEGNO],stock[TheParser.ARGILLA],stock[TheParser.FERRO],stock[TheParser.GRANO])
         village.production = Stuffs(prod[TheParser.LEGNO],prod[TheParser.ARGILLA],prod[TheParser.FERRO],prod[TheParser.GRANO])
     def __updateFromDorf2(self, village):
-        url = PATH_DORF2+ "?newdid=%s" % (village.dorfId,)
+        url = self.PATH_DORF2+ "?newdid=%s" % (village.dorfId,)
         #print url
         self.randomwait()
         self.browser.go(url)
@@ -156,7 +157,7 @@ class Engine:
         f.close()
         #print self.browser.content()
     def __updateFromKarte(self, village):
-        url = PATH_KARTE+ "?newdid=%s" % (village.dorfId,)
+        url = self.PATH_KARTE+ "?newdid=%s" % (village.dorfId,)
         self.randomwait()
         self.browser.go(url)
         sx = self.browser.content()
