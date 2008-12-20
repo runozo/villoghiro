@@ -4,7 +4,7 @@ class Account:
         self.username = username
         self.password = password
         self.cookie = ''
-        self.cookiename = 'cookie_'+username+'_'+mainurl[7:9]
+        self.cookiename = "cookie_%s_%s" % (username, mainurl[7:9])
         self.logger = None
         self.loggedin = False
         self.villages = {}

@@ -12,11 +12,11 @@ class Engine:
         self.browser = Browser()
         self.parser = TheParser()
         self.MAIN_URL = account.mainurl
-        self.PATH_LOGIN = self.MAIN_URL + "login.php"
-        self.PATH_DORF1 = self.MAIN_URL + "dorf1.php"
-        self.PATH_DORF2 = self.MAIN_URL + "dorf2.php"
-        self.PATH_BUILD = self.MAIN_URL + "build.php"
-        self.PATH_KARTE = self.MAIN_URL + "karte.php"
+        self.PATH_LOGIN = self.MAIN_URL + "/login.php"
+        self.PATH_DORF1 = self.MAIN_URL + "/dorf1.php"
+        self.PATH_DORF2 = self.MAIN_URL + "/dorf2.php"
+        self.PATH_BUILD = self.MAIN_URL + "/build.php"
+        self.PATH_KARTE = self.MAIN_URL + "/karte.php"
         self.__login()
     def sendStuff(self,srcvill, dstvill,stuffs):
             # go to main site with dorfID
@@ -61,7 +61,7 @@ class Engine:
             print 'Cookie exists: '+self.account.cookie
             self.browser.cookie = self.account.cookie
             try:
-                self.browser.go(PATH_DORF1)
+                self.browser.go(self.PATH_DORF1)
             except HTTPError, e:
                 print 'The server couldn\'t fulfill the request.'
                 print 'Error code: ', e.code
@@ -168,8 +168,9 @@ class Engine:
             village.y = s['y']
 if __name__ == '__main__':
     # It's only for debug now, not working at all
-    a = Account('http://s3.travian.uk','username','password')
-    ENG = Engine(a)
+    #a = Account('http://s3.travian.uk','username','password')
+    #ENG = Engine(a)
+    print 'hello'
     #print a.villages
     #a.villages['190934'].sendStuff(a.villages['137684'], 0, 100, 0, 0) #sendStuff(self,x,y,legno,argilla,ferro,grano)
     

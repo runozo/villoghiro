@@ -34,7 +34,7 @@ class TheParser:
             f = div.getAttribute("class")=='dname'
         return f
     def getFirstInfos(self,s=''):
-        "Returns first infos needed to generate the account"
+        "Returns first infos needed to generate the account like dorfids"
         if s: self.parse(s)
         info = {} 
         ns = self.doc.getElementsByTagName("a")
