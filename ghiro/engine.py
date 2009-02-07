@@ -19,29 +19,29 @@ class Engine:
         self.PATH_KARTE = self.MAIN_URL + "/karte.php"
         self.__login()
     def sendStuff(self,srcvill, dstvill,stuffs):
-            # go to main site with dorfID
-            legno = stuffs.legno
-            argilla = stuffs.argilla
-            ferro = stuffs.ferro
-            grano = stuffs.grano
-            print "Sending from %s to %s %swood %sclay %siron %scrop" % (srcvill.name, dstvill.name, legno, argilla,ferro,grano)
-            path = self.PATH_DORF2 + '?newdid=' + srcvill.dorfId
-            self.browser.go(path)
-            path = self.PATH_BUILD + '?id='+srcvill.marketId
-            self.browser.go(path)
-            s = self.browser.content()
-            f = open("./dorf2_"+srcvill.dorfId, "w")
-            f.write(s)
-            f.close()
-            capacity = self.parser.getMarketCapacity(s)
-            data = urllib.urlencode({'action':'build.php','id':srcvill.marketId,'r1':legno,'r2':argilla,'r3':ferro,'r4':grano,'s1':'ok','s1.x':Random().randint(0, 30),'s1.y':Random().randint(0, 30), 'x':dstvill.x, 'y':dstvill.y})
-            self.browser.go(path,data)
-            vars = self.parser.getSendStuffVars(self.browser.content())
-            print "kid=%s sz=%s cap=%s" % (vars['kid'],vars['sz'], capacity)
-            #resp, data = http.post(path, data, $header);
-            data = urllib.urlencode({'id':srcvill.marketId,'a':srcvill.dorfId,'sz':vars['sz'],'kid':vars['kid'],'r1':legno,'r2':argilla,'r3':ferro,'r4':grano,'s1.x':Random().randint(0, 30),'s1.y':Random().randint(0, 30),'s1':'ok'})
-            self.browser.go(self.PATH_BUILD,data)
-            print self.browser.content()
+        # go to main site with dorfID
+        legno = stuffs.legno
+        argilla = stuffs.argilla
+        ferro = stuffs.ferro
+        grano = stuffs.grano
+        print "Sending from %s to %s %swood %sclay %siron %scrop" % (srcvill.name, dstvill.name, legno, argilla,ferro,grano)
+        path = self.PATH_DORF2 + '?newdid=' + srcvill.dorfId
+        self.browser.go(path)
+        path = self.PATH_BUILD + '?id='+srcvill.marketId
+        self.browser.go(path)
+        s = self.browser.content()
+        f = open("./dorf2_"+srcvill.dorfId, "w")
+        f.write(s)
+        f.close()
+        capacity = self.parser.getMarketCapacity(s)
+        data = urllib.urlencode({'action':'build.php','id':srcvill.marketId,'r1':legno,'r2':argilla,'r3':ferro,'r4':grano,'s1':'ok','s1.x':Random().randint(0, 30),'s1.y':Random().randint(0, 30), 'x':dstvill.x, 'y':dstvill.y})
+        self.browser.go(path,data)
+        vars = self.parser.getSendStuffVars(self.browser.content())
+        print "kid=%s sz=%s cap=%s" % (vars['kid'],vars['sz'], capacity)
+        #resp, data = http.post(path, data, $header);
+        data = urllib.urlencode({'id':srcvill.marketId,'a':srcvill.dorfId,'sz':vars['sz'],'kid':vars['kid'],'r1':legno,'r2':argilla,'r3':ferro,'r4':grano,'s1.x':Random().randint(0, 30),'s1.y':Random().randint(0, 30),'s1':'ok'})
+        self.browser.go(self.PATH_BUILD,data)
+        print self.browser.content()
     def randomWait(self):
         time.sleep(Random().randint(0, 3))
     def __login(self):
