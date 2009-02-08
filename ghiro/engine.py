@@ -1,7 +1,7 @@
 import urllib, time, os
 from urllib2 import Request, urlopen, URLError, HTTPError
 # local imports
-from theparser import TheParser
+from cruncher import Cruncher
 from browser import Browser
 from random import Random
 from account import Account, Stuffs, Village

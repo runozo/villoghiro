@@ -1,30 +1,35 @@
+from mechanize import Browser
+from BeautifulSoup import BeautifulSoup
 import re
 import urllib
 import libxml2dom
 # TODO: intenazionalize here
-class TheParser:
+class Cruncher:
     ARGILLA = "Argilla"
     LEGNO = "Legno"
     FERRO = "Ferro"
     GRANO = "Grano"
     MARKET = "Mercato"
-    def __init__(self,s=''):
-        if s != '': self.doc = libxml2dom.parseString(s, html=1)
-    def parse(self,s):
-        "Parses the html string"
-        self.doc = libxml2dom.parseString(s, html=1)
-    def getLoginForm(self,s=''):
-        "Returns the info needed for the login"
-        #TODO: strenght this method to ensure we are in the right place
-        if s: self.parse(s)
-        ret = {}
-        ins = self.doc.getElementsByTagName("input")
-        for i in range(5):
-            if i==1: ret['loginvalue']=ins[i].getAttribute('value')
-            if i==2: ret['loginform_name'] = ins[i].getAttribute('name')
-            if i==3: ret['loginform_pass'] = ins[i].getAttribute('name')
-            if i==4: ret['loginform_hidden'] = ins[i].getAttribute('name')
-        return ret
+    def __init__(self):
+        self.browser = Browser()
+    def login(self,url,username,password):
+        "Do the login, returns true if succeded"
+        response= self.browser.open(url)
+        assert self.browser.viewing_html()
+        soup = BeautifulSoup(response.read())
+        inputs =  soup.findAll(lambda tag: tag.has_key('class') and tag['class'] == 'fm fm110')
+        print inputs[0]['name']
+        self.browser.select_form(name = "snd")
+        self.browser[inputs[0]['name']] = username
+        self.browser[inputs[1]['name']] = password
+        response = self.browser.submit()  # submit current form
+        print response.geturl()
+        print response.info().keys()
+        #.find('Set-Cookie:')
+        print response
+        #if self.browser.CookieJar():
+        #    return True
+        return False
     def iscookieok(self, s=''):
         if s: self.parse(s)
         "Check if cookie is accepted"
