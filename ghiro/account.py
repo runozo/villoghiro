@@ -1,18 +1,4 @@
-class Account:
-    def __init__(self,mainurl, username, password):
-        self.mainurl = mainurl
-        self.username = username
-        self.password = password
-        self.cookie = ''
-        self.cookiename = "cookie_%s_%s" % (username, mainurl[7:9])
-        self.logger = None
-        self.loggedin = False
-        self.villages = {}
-        #attr_writer 
-        self.cancelImageName = '' #the name of the image which is used to cancel a job. (looks like a red X)
-        self.nightmode = False #set TRUE if the bot should build during the night
-        self.mainurl = mainurl
-        # self.logname = "%s-&s" % (username,url.host.to_s[0..url.host.to_s.index(".")-1])
+
 class Village:
     def __init__(self, name,dorfId,stockStuff={},prodStuff={},destDorfId=None,browser=None,parser=None):
         self.dorfId = dorfId

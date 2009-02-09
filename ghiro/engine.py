@@ -9,15 +9,8 @@ from account import Account, Stuffs, Village
 class Engine:
     def __init__(self,account):
         self.account = account
-        self.browser = Browser()
-        self.parser = TheParser()
-        self.MAIN_URL = account.mainurl
-        self.PATH_LOGIN = self.MAIN_URL + "/login.php"
-        self.PATH_DORF1 = self.MAIN_URL + "/dorf1.php"
-        self.PATH_DORF2 = self.MAIN_URL + "/dorf2.php"
-        self.PATH_BUILD = self.MAIN_URL + "/build.php"
-        self.PATH_KARTE = self.MAIN_URL + "/karte.php"
-        self.__login()
+        self.cruncher = Cruncher()
+        self.cruncher.login()
     def sendStuff(self,srcvill, dstvill,stuffs):
         # go to main site with dorfID
         legno = stuffs.legno

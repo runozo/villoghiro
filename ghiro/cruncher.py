@@ -14,6 +14,12 @@ class Cruncher:
         self.browser = Browser()
     def login(self,url,username,password):
         "Do the login, returns true if succeded"
+        self.MAIN_URL = url # initialize some stuff
+        self.PATH_LOGIN = self.MAIN_URL + "/login.php"
+        self.PATH_DORF1 = self.MAIN_URL + "/dorf1.php"
+        self.PATH_DORF2 = self.MAIN_URL + "/dorf2.php"
+        self.PATH_BUILD = self.MAIN_URL + "/build.php"
+        self.PATH_KARTE = self.MAIN_URL + "/karte.php"
         response= self.browser.open(url)
         assert self.browser.viewing_html()
         soup = BeautifulSoup(response.read())
@@ -24,12 +30,12 @@ class Cruncher:
         self.browser[inputs[1]['name']] = password
         response = self.browser.submit()  # submit current form
         print response.geturl()
-        print response.info().keys()
-        #.find('Set-Cookie:')
-        print response
-        #if self.browser.CookieJar():
-        #    return True
-        return False
+        try:
+            print "(%s) Accepted cookie: %s" % (username,response.info()['Set-Cookie'])
+            return True 
+        except KeyError:
+            print "(%s) Login failed!" % (username,)
+            return False
     def iscookieok(self, s=''):
         if s: self.parse(s)
         "Check if cookie is accepted"
