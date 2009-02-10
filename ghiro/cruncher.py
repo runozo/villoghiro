@@ -3,13 +3,8 @@ from BeautifulSoup import BeautifulSoup
 import re
 import urllib
 import libxml2dom
-# TODO: intenazionalize here
+
 class Cruncher:
-    ARGILLA = "Argilla"
-    LEGNO = "Legno"
-    FERRO = "Ferro"
-    GRANO = "Grano"
-    MARKET = "Mercato"
     def __init__(self):
         self.browser = Browser()
     def login(self,url,username,password):
@@ -35,7 +30,7 @@ class Cruncher:
             return True 
         except KeyError:
             print "(%s) Login failed!" % (username,)
-            return False
+        return False
     def iscookieok(self, s=''):
         if s: self.parse(s)
         "Check if cookie is accepted"
