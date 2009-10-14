@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-"This is the account object. I t record the player datas and the villages datas"
+"This is the account object. It records the player datas and the villages datas"
 class Village:
     def __init__(self, name,dorfId,stockStuff={},prodStuff={},destDorfId=None,browser=None,parser=None):
         self.dorfId = dorfId
