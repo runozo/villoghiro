@@ -31,7 +31,7 @@ class Cruncher:
             username: the username for the popular-web-based-game
             password: the password for the popular-web-based-game
         Returns:
-            Bool if secceded or not
+            Bool if success or not
         """
         self.MAIN_URL = url # initialize some stuff
         self.PATH_LOGIN = self.MAIN_URL + "/login.php"
@@ -42,7 +42,8 @@ class Cruncher:
         response= self.browser.open(url)
         assert self.browser.viewing_html()
         soup = BeautifulSoup(response.read())
-        inputs =  soup.findAll(lambda tag: tag.has_key('class') and tag['class'] == 'fm fm110')
+        # inputs =  soup.findAll(lambda tag: tag.has_key('class') and tag['class'] == 'fm fm110')
+        inputs =  soup.findAll(lambda tag: (tag.has_key('type') and (tag['type'] == 'text' or tag['type'] == 'password')))
         print inputs[0]['name']
         self.browser.select_form(name = "snd")
         self.browser[inputs[0]['name']] = username
@@ -189,3 +190,30 @@ class Cruncher:
                         pass
             except AttributeError:
                 pass
+    def __updateFromDorf2(self, village):
+        url = self.PATH_DORF2+ "?newdid=%s" % (village.dorfId,)
+        #print url
+        self.randomWait()
+        self.browser.go(url)
+        sx = self.browser.content()
+        s = self.parser.getMarketId(sx)
+        if s: 
+            village.marketId = s
+            print '%s market Id: %s' % (village.name,village.marketId)
+        f = open("./dorf2_"+village.dorfId, "w")
+        f.write(sx)
+        f.close()
+        #print self.browser.content()
+    def __updateFromKarte(self, village):
+        url = self.PATH_KARTE+ "?newdid=%s" % (village.dorfId,)
+        self.randomWait()
+        self.browser.go(url)
+        sx = self.browser.content()
+        s = self.parser.getVillageCoords(sx)
+        f = open("./dorf2_karte_"+village.dorfId, "w")
+        f.write(sx)
+        f.close()
+        if s: 
+            #print '%s X:%s | Y:%s' % (village.name, s['x'], s['y'])
+            village.x = s['x']
+            village.y = s['y']

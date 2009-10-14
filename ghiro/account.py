@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-"""Classess related to the mantaining of the gam account datas"""
+"""Classess related to the management of the game account datas"""
 class Village:
     """Base class to store the villages datas"""
     def __init__(self, name,dorfId,stockStuff={},prodStuff={},destDorfId=None,browser=None,parser=None):
