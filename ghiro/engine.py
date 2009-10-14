@@ -1,3 +1,4 @@
+"This is the engine of the applications. It makes decisions and do actions accordingly"
 import urllib, time, os
 from urllib2 import Request, urlopen, URLError, HTTPError
 # local imports

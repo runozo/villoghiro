@@ -1,3 +1,4 @@
+"This class is capable of reading and interpreting the markup of the travian pages"
 from mechanize import Browser
 from BeautifulSoup import BeautifulSoup
 import re

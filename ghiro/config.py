@@ -1,3 +1,4 @@
+"The config class reads and write the config file and keeps relative data in memory for processing"
 import os
 from BeautifulSoup import BeautifulStoneSoup
 
