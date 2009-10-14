@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-"""This class is capable of reading and interpreting the markup of the travian pages."""
+"""The HTML markup cruncher."""
 from mechanize import Browser
 from BeautifulSoup import BeautifulSoup
 import re
@@ -25,7 +25,14 @@ class Cruncher:
     def __init__(self):
         self.browser = Browser()
     def login(self,url,username,password):
-        "Do the login, returns true if succeded"
+        """Do the login
+        Args:
+            url: the url of the popular-web-based-game login page
+            username: the username for the popular-web-based-game
+            password: the password for the popular-web-based-game
+        Returns:
+            Bool if secceded or not
+        """
         self.MAIN_URL = url # initialize some stuff
         self.PATH_LOGIN = self.MAIN_URL + "/login.php"
         self.PATH_DORF1 = self.MAIN_URL + "/dorf1.php"
@@ -49,15 +56,26 @@ class Cruncher:
             print "(%s) Login failed!" % (username,)
         return False
     def iscookieok(self, s=''):
+        """Check if cookie is accepted
+        Args:
+            s: The markup to be parsed
+        Returns:
+            Bool if the cookie was accepted or not
+        """
         if s: self.parse(s)
-        "Check if cookie is accepted"
+        
         divs = self.doc.getElementsByTagName("div")
         f = False
         for div in divs: 
             f = div.getAttribute("class")=='dname'
         return f
     def getFirstInfos(self,s=''):
-        "Returns first infos needed to generate the account like dorfids"
+        """Gets the list of all the dorfIDS
+        Args:
+            s: The markup to be parsed
+        Returns:
+            Dictionary containig the key/value dorfID/villagename
+        """
         if s: self.parse(s)
         info = {} 
         ns = self.doc.getElementsByTagName("a")
@@ -69,6 +87,7 @@ class Cruncher:
                 info[s] = n.textContent #The village name is in textContent and the villageID in s
         return info
     def getVillageCoords(self, s=''):
+        """Returns the coordinates from every village"""
         if s: self.parse(s)
         # we try to get village coordinates
         c = {}
@@ -79,7 +98,7 @@ class Cruncher:
         c['y'] = ny.textContent
         return c
     def getVillageInfos(self,s=''):
-        "Returns first infos needed to generate the account"
+        """Returns first infos needed to generate the account"""
         if s: self.parse(s)
         info,prod,stock = {},{self.LEGNO:'',self.ARGILLA:'',self.FERRO:'',self.GRANO:''},{self.LEGNO:'',self.ARGILLA:'',self.FERRO:'',self.GRANO:''}
         ns = self.doc.getElementsByTagName("td")
@@ -115,7 +134,13 @@ class Cruncher:
         info['production'] = prod
         return info
     def getMarketId(self,s=''):
-        "Returns the market id"
+        """Returns the market id
+        Args:
+            s: The markup to be parsed
+        Returns:
+            None if the market couldn't be found
+            String with the ID of the market 
+        """
         if s: self.parse(s)
         found = False
         t,tmp = '',''

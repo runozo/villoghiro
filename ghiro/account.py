@@ -14,8 +14,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-"This is the account object. It records the player datas and the villages datas"
+"""Classess related to the mantaining of the gam account datas"""
 class Village:
+    """Base class to store the villages datas"""
     def __init__(self, name,dorfId,stockStuff={},prodStuff={},destDorfId=None,browser=None,parser=None):
         self.dorfId = dorfId
         self.name = name
@@ -29,6 +30,7 @@ class Village:
         self.x = None
         self.y = None
 class Stuffs:
+    """Base class to store the amount of stuffs"""
     def __init__(self,legno,argilla,ferro,grano):
         self.legno = legno
         self.argilla = argilla

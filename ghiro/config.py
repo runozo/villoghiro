@@ -14,12 +14,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-"""The config class reads and write the config file and keeps relative data in memory for processing."""
+"""A convenient way to read the program configuration"""
 import os
 from BeautifulSoup import BeautifulStoneSoup
 
 class Config:
-    """ Reads the config file at init and evaluates the Config's methods & properties"""
+    """Base class to read from the config file"""
     def __init__(self,configfile=os.path.join(os.path.basename( __file__),os.pardir,'config','config.xml')):
         print os.path.abspath(configfile)
         try:
