@@ -88,7 +88,12 @@ class Cruncher:
                 info[s] = n.textContent #The village name is in textContent and the villageID in s
         return info
     def getVillageCoords(self, s=''):
-        """Returns the coordinates from every village"""
+        """Returns the coordinates of a village
+        Args:
+            s: The markup to be parsed
+        Returns:
+            Dictionary containig the coordinates
+        """
         if s: self.parse(s)
         # we try to get village coordinates
         c = {}
@@ -99,7 +104,12 @@ class Cruncher:
         c['y'] = ny.textContent
         return c
     def getVillageInfos(self,s=''):
-        """Returns first infos needed to generate the account"""
+        """Returns first infos needed to generate the account
+        Args:
+            s: The markup to be parsed
+        Returns:
+            Dictionary "info" containig another dict for the stocks and the production of a village
+        """
         if s: self.parse(s)
         info,prod,stock = {},{self.LEGNO:'',self.ARGILLA:'',self.FERRO:'',self.GRANO:''},{self.LEGNO:'',self.ARGILLA:'',self.FERRO:'',self.GRANO:''}
         ns = self.doc.getElementsByTagName("td")
@@ -124,13 +134,6 @@ class Cruncher:
                 m = re.search('-*[\d]+',ns[i+1].textContent)
                 prod[self.GRANO] = m.group(0)  
             i += 1
-#            print info(libxml2dom.Node_textContent)
-#            s = n.getAttribute('href')
-#            if s.find("?newdid=")!=-1:
-#                s = s[len("?newdid="):]
-#                info[s] = n.textContent
-        #print stock
-        #print prod
         info['stock'] = stock
         info['production'] = prod
         return info
